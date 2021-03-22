@@ -19,19 +19,21 @@
 #include <stdlib.h>
 #include <map>
 #include <mutex>
-#include <filesystem>
+// #include <filesystem>
+#include <experimental/filesystem>
 #include <iostream>
 #include <sstream>
 
 #include "ProcessBuilder.hpp"
 using std::isspace;
+namespace filesystem = std::experimental::filesystem;
 
 namespace subprocess {
     std::string getcwd() {
-        return std::filesystem::current_path().string();
+        return filesystem::current_path().string();
     }
     void setcwd(const std::string& path) {
-        std::filesystem::current_path(path);
+        filesystem::current_path(path);
     }
 }
 namespace {
@@ -41,8 +43,8 @@ namespace {
         try {
             if (path.empty())
                 return false;
-            return std::filesystem::is_regular_file(path);
-        } catch (std::filesystem::filesystem_error& e) {
+            return filesystem::is_regular_file(path);
+        } catch (filesystem::filesystem_error& e) {
             return false;
         }
     }
